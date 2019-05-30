@@ -8,10 +8,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DividerItemDecoration
 import kotlinx.android.synthetic.main.activity_main.*
 import androidx.recyclerview.widget.RecyclerView
+import io.reactivex.*
 import io.reactivex.Observable
-import io.reactivex.ObservableSource
 import io.reactivex.Observer
-import io.reactivex.SingleObserver
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
@@ -66,7 +65,20 @@ class MainActivity : AppCompatActivity() {
                     Toast.makeText(applicationContext, it.message, Toast.LENGTH_SHORT).show()
                 })
             .addTo(autoDisposable)
+
+        //Production Code out in the wild
+        apiQueens.getQueens()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(
+                {it->queenAdapterLite.setQueens(it)},
+                {err -> Log.e("Eroor Messgage", err.toString())}
+            )
+            .addTo(autoDisposable)
+
+
     }
+
 
 /*
             apiQueens.getQueens()
