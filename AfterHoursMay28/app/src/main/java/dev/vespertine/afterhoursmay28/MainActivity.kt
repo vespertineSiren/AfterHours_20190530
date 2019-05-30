@@ -29,6 +29,7 @@ class MainActivity : AppCompatActivity() {
     private val disposables = CompositeDisposable()
     private lateinit var queenAdapter: QueenAdapter
     private val autoDisposable = AutoDisposable()
+    private lateinit var queenAdapterLite: QueenAdapterLite
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,11 +37,19 @@ class MainActivity : AppCompatActivity() {
 
         autoDisposable.bindTo(this.lifecycle)
 
+/*        //Adapter Old Way
         queenAdapter = QueenAdapter()
         queen_list.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
-        queen_list.adapter = queenAdapter
+        queen_list.adapter = queenAdapter*/
 
-        val retrofit : Retrofit = Retrofit.Builder()
+        //Light Adapter
+        queenAdapterLite = QueenAdapterLite(mutableListOf())
+        queen_list
+        queen_list.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
+        queen_list.adapter = queenAdapterLite
+
+
+        val retrofit: Retrofit = Retrofit.Builder()
             .baseUrl("http://www.nokeynoshade.party/api/")
             .addConverterFactory(GsonConverterFactory.create())
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
@@ -48,6 +57,16 @@ class MainActivity : AppCompatActivity() {
 
         val apiQueens = retrofit.create(ApiNoKeyNoShade::class.java)
 
+        apiQueens.getQueens()
+            .subscribeOn(Schedulers.io())
+            .unsubscribeOn(Schedulers.computation())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({ queenAdapterLite.setQueens(it) },
+                {
+                    Toast.makeText(applicationContext, it.message, Toast.LENGTH_SHORT).show()
+                })
+            .addTo(autoDisposable)
+    }
 
 /*
             apiQueens.getQueens()
@@ -97,7 +116,7 @@ class MainActivity : AppCompatActivity() {
             })
 */
 
-        apiQueens.getQueens()
+/*        apiQueens.getQueens()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(object : SingleObserver<List<Queen>>{
@@ -115,7 +134,7 @@ class MainActivity : AppCompatActivity() {
             })
 
 
-    }
+    }*/
 
     override fun onStop() {
         super.onStop()

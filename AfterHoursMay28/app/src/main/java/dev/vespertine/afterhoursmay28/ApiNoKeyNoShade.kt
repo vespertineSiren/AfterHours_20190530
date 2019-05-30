@@ -8,4 +8,6 @@ interface ApiNoKeyNoShade {
     //base: http://www.nokeynoshade.party/api/
     @GET("queens/all")
     fun getQueens(): Single<List<Queen>>
+
+
 }

@@ -32,6 +32,7 @@ class QueenAdapter : RecyclerView.Adapter<QueenAdapter.QueenViewHolder>(){
             queenCongen.text = "Miss Congeniality? " + queen.missCongeniality.toString()
 
 
+
         }
 
 
@@ -44,6 +45,7 @@ class QueenAdapter : RecyclerView.Adapter<QueenAdapter.QueenViewHolder>(){
 
     override fun onBindViewHolder(viewHolder: QueenViewHolder, index: Int) {
         viewHolder.bindModel(queenList[index])
+
     }
 
     override fun getItemCount(): Int = queenList.size

@@ -1,8 +1,10 @@
 package dev.vespertine.afterhoursmay28
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.queen_list_element_layout.view.*
@@ -24,7 +26,18 @@ class QueenAdapterLite(
             view.searched_queens_misscongeniality.text = "Miss Congeniality? " + data.missCongeniality.toString()
             view.searched_queens_quote.text = "Quote: " + data.quote
             Picasso.get().load(data.image_url).into(view.searched_queen_image)
-            
+            view.setOnClickListener{
+                val intent = Intent(view.context, QueenDetails::class.java)
+                intent.putExtra("queen", data.id)
+                startActivity(view.context, intent, null)
+
+            }
+
         }
+    }
+
+    fun setQueens(data: List<Queen>) {
+        masterList.addAll(data)
+        notifyDataSetChanged()
     }
 }
