@@ -41,11 +41,7 @@ class MainActivity : AppCompatActivity() {
         queen_list.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
         queen_list.adapter = queenAdapter*/
 
-        //Light Adapter
-        queenAdapterLite = QueenAdapterLite(mutableListOf())
-        queen_list
-        queen_list.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
-        queen_list.adapter = queenAdapterLite
+
 
 
         val retrofit: Retrofit = Retrofit.Builder()
@@ -66,16 +62,18 @@ class MainActivity : AppCompatActivity() {
                 })
             .addTo(autoDisposable)
 
+
+
         //Production Code out in the wild
         apiQueens.getQueens()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 {it->queenAdapterLite.setQueens(it)},
-                {err -> Log.e("Eroor Messgage", err.toString())}
+                {err -> Log.e("Error Messgage", err.toString())}
             )
             .addTo(autoDisposable)
-
+        //Add to part of rxkotlin
 
     }
 
@@ -163,3 +161,9 @@ class MainActivity : AppCompatActivity() {
         private const val TAG = "MainActivity"
     }
 }
+
+
+//        //Light Adapter
+//        queenAdapterLite = QueenAdapterLite(mutableListOf())
+//        queen_list.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
+//        queen_list.adapter = queenAdapterLite
