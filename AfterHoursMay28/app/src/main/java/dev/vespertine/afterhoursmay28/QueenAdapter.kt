@@ -31,25 +31,17 @@ class QueenAdapter : RecyclerView.Adapter<QueenAdapter.QueenViewHolder>(){
             queenQuote.text =  "Quote: " + queen.quote
             queenCongen.text = "Miss Congeniality? " + queen.missCongeniality.toString()
 
-
-
         }
-
-
     }
-
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): QueenViewHolder{
         return QueenViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.queen_list_element_layout, parent, false))
     }
-
     override fun onBindViewHolder(viewHolder: QueenViewHolder, index: Int) {
         viewHolder.bindModel(queenList[index])
 
     }
-
     override fun getItemCount(): Int = queenList.size
-
     fun setQueens(data: List<Queen>) {
         queenList.addAll(data)
         notifyDataSetChanged()

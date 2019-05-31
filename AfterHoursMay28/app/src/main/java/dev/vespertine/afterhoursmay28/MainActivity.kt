@@ -36,12 +36,15 @@ class MainActivity : AppCompatActivity() {
 
         autoDisposable.bindTo(this.lifecycle)
 
-/*        //Adapter Old Way
-        queenAdapter = QueenAdapter()
+//        //Adapter Old Way
+//        queenAdapter = QueenAdapter()
+//        queen_list.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
+//        queen_list.adapter = queenAdapter
+
+
+        queenAdapterLite = QueenAdapterLite(mutableListOf())
         queen_list.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
-        queen_list.adapter = queenAdapter*/
-
-
+        queen_list.adapter = queenAdapterLite
 
 
         val retrofit: Retrofit = Retrofit.Builder()
@@ -54,25 +57,37 @@ class MainActivity : AppCompatActivity() {
 
         apiQueens.getQueens()
             .subscribeOn(Schedulers.io())
-            .unsubscribeOn(Schedulers.computation())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({ queenAdapterLite.setQueens(it) },
-                {
-                    Toast.makeText(applicationContext, it.message, Toast.LENGTH_SHORT).show()
-                })
-            .addTo(autoDisposable)
-
-
-
-        //Production Code out in the wild
-        apiQueens.getQueens()
-            .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 {it->queenAdapterLite.setQueens(it)},
                 {err -> Log.e("Error Messgage", err.toString())}
             )
             .addTo(autoDisposable)
+
+
+
+
+//        apiQueens.getQueens()
+//            .subscribeOn(Schedulers.io())
+//            .unsubscribeOn(Schedulers.computation())
+//            .observeOn(AndroidSchedulers.mainThread())
+//            .subscribe({ queenAdapterLite.setQueens(it) },
+//                {
+//                    Toast.makeText(applicationContext, it.message, Toast.LENGTH_SHORT).show()
+//                })
+//            .addTo(autoDisposable)
+//
+//
+//
+//        //Production Code out in the wild
+//        apiQueens.getQueens()
+//            .subscribeOn(Schedulers.io())
+//            .observeOn(AndroidSchedulers.mainThread())
+//            .subscribe(
+//                {it->queenAdapterLite.setQueens(it)},
+//                {err -> Log.e("Error Messgage", err.toString())}
+//            )
+//            .addTo(autoDisposable)
         //Add to part of rxkotlin
 
     }
