@@ -10,6 +10,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import androidx.recyclerview.widget.RecyclerView
 import io.reactivex.*
 import io.reactivex.Observable
+import io.reactivex.Observable.fromIterable
 import io.reactivex.Observer
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -55,7 +56,9 @@ class MainActivity : AppCompatActivity() {
 
         val apiQueens = retrofit.create(ApiNoKeyNoShade::class.java)
 
+        //
         apiQueens.getQueens()
+//            .map { it.filter { x->x.missCongeniality } }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(

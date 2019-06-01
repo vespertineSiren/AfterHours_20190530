@@ -25,7 +25,11 @@ class QueenAdapterLite(
             view.searched_queens_misscongeniality.text = "Miss Congeniality? " + data.missCongeniality.toString()
             view.searched_queens_quote.text = "Quote: " + data.quote
 
-            Picasso.get().load(data.image_url).into(view.searched_queen_image)
+            Picasso.get()
+                .load(data.image_url)
+                .fit()
+                .centerInside()
+                .into(view.searched_queen_image)
 
             view.setOnClickListener{
                 val intent = Intent(view.context, QueenDetails::class.java)

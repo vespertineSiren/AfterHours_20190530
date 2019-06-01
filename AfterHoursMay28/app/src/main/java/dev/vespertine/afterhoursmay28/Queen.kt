@@ -7,8 +7,8 @@ import kotlinx.serialization.Serializable
 data class Queen (
     val id: Int? = -1,
     val name: String? = "",
-    val winner: Boolean? = false,
-    val missCongeniality: Boolean? = false,
+    val winner: Boolean,
+    val missCongeniality: Boolean,
     val image_url: String? = "",
     val quote: String? = ""
 )
